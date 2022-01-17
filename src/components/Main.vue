@@ -49,9 +49,7 @@ export default {
 <style lang="scss">
 @import "../assets/scss/partials/variables.scss";
 main {
-  height: calc(100vh - 68px);
-  display: flex;
-  align-items: center;
+  padding-top: 4.7em;
   background-color: $mainBc;
   .album-container {
     margin: 0 auto;
@@ -65,7 +63,7 @@ main {
       flex-direction: column;
       align-items: center;
       margin: 1em;
-      padding: 1em;
+      padding: 2em 0 0 0;
       .album-cover {
         width: 150px;
         img {
