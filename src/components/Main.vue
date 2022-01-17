@@ -1,6 +1,6 @@
 <template>
   <main>
-    <div class="album-container">
+    <div class="album-container" v-if="albums">
       <Album
         v-for="(album, index) in albums"
         :key="index"
@@ -10,15 +10,19 @@
         :year="album.year"
       />
     </div>
+    <Album />
+    <Loader v-if="!albums" />
   </main>
 </template>
 
 <script>
 import axios from "axios";
 import Album from "./Album.vue";
+import Loader from "./Loader.vue";
 export default {
   components: {
     Album,
+    Loader,
   },
   data() {
     return {
@@ -30,17 +34,17 @@ export default {
   },
   methods: {
     getArrayApi: function () {
-      // Make a request for a user with a given ID
-      axios
-        .get("https://flynn.boolean.careers/exercises/api/array/music")
-        .then((response) => {
-          this.albums = response.data.response;
-          console.log(this.albums);
-        })
-        .catch(function (error) {
-          // handle error
-          console.log(error);
-        });
+      setTimeout(() => {
+        axios
+          .get("https://flynn.boolean.careers/exercises/api/array/music")
+          .then((response) => {
+            this.albums = response.data.response;
+            console.log(this.albums);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }, 2500);
     },
   },
 };
@@ -49,7 +53,7 @@ export default {
 <style lang="scss">
 @import "../assets/scss/partials/variables.scss";
 main {
-  padding-top: 4.7em;
+  padding-top: 3.6em;
   background-color: $mainBc;
   .album-container {
     margin: 0 auto;
