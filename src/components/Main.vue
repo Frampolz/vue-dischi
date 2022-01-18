@@ -1,8 +1,9 @@
 <template>
   <main>
     <div class="album-container" v-if="albums">
+      <Select @filterGnr="genrefilter($event)" />
       <Album
-        v-for="(album, index) in albums"
+        v-for="(album, index) in filtered"
         :key="index"
         :src="album.poster"
         :title="album.title"
@@ -19,18 +20,23 @@
 import axios from "axios";
 import Album from "./Album.vue";
 import Loader from "./Loader.vue";
+import Select from "./Select.vue";
+
 export default {
   components: {
     Album,
     Loader,
+    Select,
   },
   data() {
     return {
       albums: null,
+      filtered: null,
     };
   },
   created() {
     this.getArrayApi();
+    
   },
   methods: {
     getArrayApi: function () {
@@ -44,7 +50,14 @@ export default {
           .catch(function (error) {
             console.log(error);
           });
-      }, 2500);
+      }, 0);
+    },
+    genrefilter(value) {
+      if(this.filtered == "") {
+        return this.albums
+      }
+      
+      return this.filtered = this.albums.filter((element) => element.genre.toLowerCase().includes(value)) 
     },
   },
 };
