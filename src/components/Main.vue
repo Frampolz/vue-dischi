@@ -1,7 +1,7 @@
 <template>
   <main>
-    <div class="album-container" v-if="albums">
-      <Select @filterGnr="genrefilter($event)" />
+    <Select @filterGnr="genrefilter($event)" />
+    <div class="album-container" v-if="filtered">
       <Album
         v-for="(album, index) in filtered"
         :key="index"
@@ -32,12 +32,13 @@ export default {
     return {
       albums: null,
       filtered: null,
+      selectValue: "",
     };
   },
   created() {
     this.getArrayApi();
-    
   },
+
   methods: {
     getArrayApi: function () {
       setTimeout(() => {
@@ -45,19 +46,24 @@ export default {
           .get("https://flynn.boolean.careers/exercises/api/array/music")
           .then((response) => {
             this.albums = response.data.response;
+            this.filtered = response.data.response;
             console.log(this.albums);
           })
           .catch(function (error) {
             console.log(error);
           });
-      }, 0);
+      }, 2000);
     },
     genrefilter(value) {
-      if(this.filtered == "") {
-        return this.albums
+      this.selectValue = value;
+      if (this.selectValue == "") {
+        this.filtered = this.albums;
+        //console.log("qui");
+      } else {
+        return (this.filtered = this.albums.filter((element) =>
+          element.genre.toLowerCase().includes(this.selectValue)
+        ));
       }
-      
-      return this.filtered = this.albums.filter((element) => element.genre.toLowerCase().includes(value)) 
     },
   },
 };
